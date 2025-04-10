@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
-import { useParams } from "react-router-dom";
 import ImageSection from "./ImageSection";
 
 const GalleryUpload = ({ getImage }) => {
   const methods = useForm();
   const { getValues } = methods;
-  const { id } = useParams();
+
   const [uploading, setUploading] = useState(false);
   const [uploadResult, setUploadResult] = useState(null);
+  const user = JSON.parse(localStorage.getItem("user"));
+  const id = user?._id;
 
   const onSubmit = async () => {
     const images = getValues("imageFile");
