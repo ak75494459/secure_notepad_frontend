@@ -26,7 +26,7 @@ export default function Form(props) {
   // Fetch data from API and store the user info in localStorage
   const fetchData = async () => {
     console.log("Password being sent:", text);
-    
+
     try {
       let result = await fetch(`${process.env.REACT_APP_BASE_API_URL}/signUp`, {
         method: "POST",
@@ -67,7 +67,7 @@ export default function Form(props) {
         // Check if the user exists and if the entered text matches the password
         if (parsedUser && text === parsedUser.password) {
           sessionStorage.setItem("isAuthenticated", "true");
-          navigate(`/secure-gallery/${parsedUser._id}`);
+          navigate("/secure-gallery");
         }
       } catch (error) {
         console.error("Error parsing user data from localStorage:", error);
@@ -83,7 +83,9 @@ export default function Form(props) {
           Example textarea
         </label>
         <textarea
-          className={`form-control bg-${props.mode} text-${props.mode === "light" ? "dark" : "light"}`}
+          className={`form-control bg-${props.mode} text-${
+            props.mode === "light" ? "dark" : "light"
+          }`}
           id="exampleFormControlTextarea1"
           rows="15"
           value={text}
@@ -99,7 +101,11 @@ export default function Form(props) {
 
       {/* Only show Set Password button if no user is in localStorage */}
       {localStorage.getItem("user") ? null : (
-        <button type="button" className="btn btn-primary mx-2" onClick={fetchData}>
+        <button
+          type="button"
+          className="btn btn-primary mx-2"
+          onClick={fetchData}
+        >
           Set Password
         </button>
       )}
@@ -107,7 +113,8 @@ export default function Form(props) {
       <div className="container my-2">
         <p>No of Elements - {text.length}</p>
         <p>
-          No of words - {text.trim() === "" ? 0 : text.trim().split(/\s+/).length}
+          No of words -{" "}
+          {text.trim() === "" ? 0 : text.trim().split(/\s+/).length}
         </p>
       </div>
     </div>
