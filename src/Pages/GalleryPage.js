@@ -33,9 +33,8 @@ const GalleryPage = () => {
 
   return (
     <div className="m-4">
-      {/* <GalleryUpload getImage={getImage} />
-      <GalleryImage images={images} getImage={getImage} /> */}
-      <h1>Gallary Page</h1>
+      <GalleryUpload getImage={getImage} />
+      <GalleryImage images={images} getImage={getImage} />
     </div>
   );
 };
