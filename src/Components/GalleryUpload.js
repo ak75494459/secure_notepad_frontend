@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import ImageSection from "./ImageSection";
+import { useParams } from "react-router-dom";
 
 const GalleryUpload = ({ getImage }) => {
   const methods = useForm();
@@ -8,8 +9,7 @@ const GalleryUpload = ({ getImage }) => {
 
   const [uploading, setUploading] = useState(false);
   const [uploadResult, setUploadResult] = useState(null);
-  const user = JSON.parse(localStorage.getItem("user"));
-  const id = user?._id;
+  const { id } = useParams();
 
   const onSubmit = async () => {
     const images = getValues("imageFile");
@@ -32,7 +32,7 @@ const GalleryUpload = ({ getImage }) => {
     try {
       setUploading(true);
       const response = await fetch(
-        `${process.env.REACT_APP_BASE_API_URL}/secure-gallery/${id}`,
+        `${process.env.REACT_APP_BASE_API_URL}/api/secure-gallery/${id}`,
         {
           method: "POST",
           body: formData,

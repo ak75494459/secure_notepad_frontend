@@ -7,10 +7,9 @@ const GalleryPage = () => {
 
   const getImage = useCallback(async () => {
     const user = JSON.parse(localStorage.getItem("user"));
-
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BASE_API_URL}/secure-gallery?user=${user._id}`,
+        `${process.env.REACT_APP_BASE_API_URL}/api/secure-gallery?user=${user._id}`,
         {
           method: "GET",
           headers: {
@@ -29,7 +28,7 @@ const GalleryPage = () => {
     } catch (error) {
       console.error("Error fetching images:", error);
     }
-  }, []); // 👈 empty dependency array to keep it stable
+  }, []);
 
   return (
     <div className="m-4">
