@@ -67,7 +67,7 @@ export default function Form(props) {
         // Check if the user exists and if the entered text matches the password
         if (parsedUser && text === parsedUser.password) {
           sessionStorage.setItem("isAuthenticated", "true");
-          navigate("/secure-gallery");
+          navigate("/gallary");
         }
       } catch (error) {
         console.error("Error parsing user data from localStorage:", error);

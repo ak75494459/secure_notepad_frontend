@@ -50,7 +50,7 @@ function App() {
           }
         />
         <Route element={<PrivateCom />}>
-          <Route path={`/secure-gallery`} element={<GalleryPage />} />
+          <Route path={"/gallary"} element={<GalleryPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
