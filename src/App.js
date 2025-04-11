@@ -10,6 +10,7 @@ import GalleryPage from "./Pages/GalleryPage.js";
 function App() {
   const [text, setText] = useState("Enable DarkMode");
   const [mode, setMode] = useState("light");
+  
 
   const showAlert = (message, type) => {
     setAlert({

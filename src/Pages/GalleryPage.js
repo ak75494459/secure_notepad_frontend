@@ -1,15 +1,16 @@
 import { useState, useCallback } from "react";
 import GalleryUpload from "../Components/GalleryUpload";
 import GalleryImage from "../Components/GalleryImage";
+import { useParams } from "react-router-dom";
 
 const GalleryPage = () => {
   const [images, setImages] = useState([]);
+  const { id } = useParams();
 
   const getImage = useCallback(async () => {
-    const user = JSON.parse(localStorage.getItem("user"));
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BASE_API_URL}/api/secure-gallery?user=${user._id}`,
+        `${process.env.REACT_APP_BASE_API_URL}/api/secure-gallery?user=${id}`,
         {
           method: "GET",
           headers: {
@@ -28,12 +29,12 @@ const GalleryPage = () => {
     } catch (error) {
       console.error("Error fetching images:", error);
     }
-  }, []);
+  }, [id]);
 
   return (
     <div className="m-4">
-      <GalleryUpload getImage={getImage} />
-      <GalleryImage images={images} getImage={getImage} />
+      <GalleryUpload getImage={getImage} id={id} />
+      <GalleryImage images={images} getImage={getImage} id={id} />
     </div>
   );
 };
