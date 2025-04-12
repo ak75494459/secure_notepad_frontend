@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import GalleryUpload from "../Components/GalleryUpload";
 import GalleryImage from "../Components/GalleryImage";
 import { useParams } from "react-router-dom";
@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 const GalleryPage = () => {
   const [images, setImages] = useState([]);
   const { id } = useParams();
+  const [loading, setLoading] = useState(false);
 
   const getImage = useCallback(async () => {
     try {
@@ -26,15 +27,25 @@ const GalleryPage = () => {
       const data = await response.json();
       const allImageUrls = data.flatMap((gallery) => gallery.imageUrl || []);
       setImages(allImageUrls);
+      setLoading(true);
     } catch (error) {
       console.error("Error fetching images:", error);
     }
   }, [id]);
 
+  // Call getImage on component mount
+  useEffect(() => {
+    getImage();
+  }, [getImage]);
+
   return (
     <div className="m-4">
       <GalleryUpload getImage={getImage} id={id} />
-      <GalleryImage images={images} getImage={getImage} id={id} />
+      {loading ? (
+        <GalleryImage images={images} getImage={getImage} id={id} />
+      ) : (
+        <h1 className="text-center">Loading...</h1>
+      )}
     </div>
   );
 };
