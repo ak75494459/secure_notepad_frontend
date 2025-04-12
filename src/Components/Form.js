@@ -4,34 +4,31 @@ import { useNavigate } from "react-router-dom";
 export default function Form(props) {
   const navigate = useNavigate();
   const [text, setText] = useState("");
+  const [loading, setLoading] = useState(false); // ✅ Add loading state
 
-  // Convert text to uppercase
   function UpperCase() {
     setText(text.toUpperCase());
   }
 
-  // Handle text input changes
   function onChangeHandler(event) {
     setText(event.target.value);
   }
 
-  // Copy text to clipboard
   function CopyText() {
     navigator.clipboard.writeText(text);
   }
 
-  // Log the API URL for debugging
   console.log("API URL:", process.env.REACT_APP_BASE_API_URL);
 
-  // Fetch data from API and store the user info in localStorage
   const fetchData = async () => {
     console.log("Password being sent:", text);
+    setLoading(true); // ✅ Start loading
 
     try {
       let result = await fetch(`${process.env.REACT_APP_BASE_API_URL}/signUp`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json", // fix: "Content-Type" was lowercase
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           password: text,
@@ -44,27 +41,26 @@ export default function Form(props) {
 
       result = await result.json();
 
-      // Check if result.result exists before setting localStorage
       if (result && result.result) {
         console.warn(result);
         localStorage.setItem("user", JSON.stringify(result.result));
-        setText(""); // Clear the input field
+        setText("");
       } else {
         console.error("Invalid response from API:", result);
       }
     } catch (error) {
       console.error("Error occurred during fetch:", error);
+    } finally {
+      setLoading(false); // ✅ End loading
     }
   };
 
-  // Check if user is authenticated when the component mounts
   useEffect(() => {
     const user = localStorage.getItem("user");
 
     if (user) {
       try {
         const parsedUser = JSON.parse(user);
-        // Check if the user exists and if the entered text matches the password
         if (parsedUser && text === parsedUser.password) {
           sessionStorage.setItem("isAuthenticated", "true");
           navigate(`/secure-gallery/${parsedUser._id}`);
@@ -99,14 +95,15 @@ export default function Form(props) {
         Copy Text
       </button>
 
-      {/* Only show Set Password button if no user is in localStorage */}
-      {localStorage.getItem("user") ? null : (
+      {/* ✅ Show loading state for the Set Password button */}
+      {!localStorage.getItem("user") && (
         <button
           type="button"
           className="btn btn-primary mx-2"
           onClick={fetchData}
+          disabled={loading}
         >
-          Set Password
+          {loading ? "Creating User..." : "Set Password"}
         </button>
       )}
 

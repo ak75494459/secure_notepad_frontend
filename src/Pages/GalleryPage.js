@@ -44,7 +44,7 @@ const GalleryPage = () => {
       {loading ? (
         <GalleryImage images={images} getImage={getImage} id={id} />
       ) : (
-        <h1 className="text-center">Loading...</h1>
+        <h1 className="text-center">Fetching Image</h1>
       )}
     </div>
   );
